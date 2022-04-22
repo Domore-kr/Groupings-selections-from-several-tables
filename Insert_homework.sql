@@ -128,6 +128,9 @@ insert into album (id, name, year_of_issue)
 	values (7, 'dragons', 2014);
 insert into album (id, name, year_of_issue) 
 	values (8, 'Poisons', 2018);
+insert into album (id, name, year_of_issue) 
+	values (9, 'it will pass', 2020);
+
 
 
 
@@ -163,6 +166,14 @@ insert into musician_album (id, musician_ID, album_ID)
 	values (15, 4, 3);
 insert into musician_album (id, musician_ID, album_ID) 
 	values (16, 4, 4);
+insert into musician_album (id, musician_ID, album_ID) 
+	values (33, 1, 9);
+insert into musician_album (id, musician_ID, album_ID) 
+	values (34, 2, 9);
+insert into musician_album (id, musician_ID, album_ID) 
+	values (35, 3, 9);
+insert into musician_album (id, musician_ID, album_ID) 
+	values (36, 4, 9);
 	
 insert into musician_album (id, musician_ID, album_ID) 
 	values (17, 5, 5);
@@ -231,6 +242,14 @@ insert into Track (id, Name, duration, album_ID)
 	values (15, 'Oh my Shakespeare', 156, 8);
 insert into Track (id, Name, duration, album_ID) 
 	values (16, 'S.A.T.A.N.', 210, 8);
+insert into Track (id, Name, duration, album_ID) 
+	values (17, 'Uncle Volodya', 236, 9);
+insert into Track (id, Name, duration, album_ID) 
+	values (18, 'Love will take us', 227, 9);
+insert into Track (id, Name, duration, album_ID) 
+	values (19, 'Someone elses grief', 204, 9);
+insert into Track (id, Name, duration, album_ID) 
+	values (20, 'Love lessons', 316, 9);
 	
 
 
