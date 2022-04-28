@@ -12,16 +12,15 @@ mus_genre = connection.execute(
     GROUP BY g.id
     ORDER BY musician_q DESC;
     """).fetchall()
-pprint(*mus_genre)
+pprint(mus_genre)
 
 new_track = connection.execute(
     """
     SELECT COUNT(*) FROM track
-    WHERE album_id = (
-    SELECT id FROM album
-    WHERE year_of_issue BETWEEN 2019 AND 2020);
+    JOIN album ON track.album_id = album.id
+    WHERE year_of_issue BETWEEN 2019 AND 2020;
     """).fetchall()
-pprint(*new_track)
+pprint(new_track)
 
 average = connection.execute(
     """
@@ -29,7 +28,7 @@ average = connection.execute(
     JOIN track ON album.id = track.album_id
     GROUP BY album_name;
     """).fetchall()
-pprint(*average)
+pprint(average)
 
 musician_not_2020 = connection.execute(
     """
@@ -62,6 +61,8 @@ genre_mus = connection.execute(
     LEFT JOIN musician m ON m.id = ma.musician_id
     LEFT JOIN musician_genre mg ON m.id = mg.musician_id
     LEFT JOIN genre g ON g.id = mg.genre_id
+    GROUP BY a.album_name
+    HAVING COUNT(DISTINCT g.name) > 1
     ORDER BY a.album_name;
     """).fetchall()
 pprint(genre_mus)
@@ -80,9 +81,8 @@ short_track = connection.execute(
     LEFT JOIN album a ON a.id = t.album_id
     LEFT JOIN musician_album ma ON ma.album_id = a.id
     LEFT JOIN musician m ON m.id = ma.musician_id
-    GROUP BY m.name, t.duration
-    HAVING t.duration = (select min(duration) from track)
-    ORDER BY m.name;
+    WHERE t.duration = (
+    SELECT MIN(t.duration) FROM track t);
     """).fetchall()
 pprint(short_track)
 
@@ -90,16 +90,16 @@ short_albums = connection.execute(
     """
     SELECT DISTINCT a.album_name FROM album a
     LEFT JOIN track t ON t.album_id = a.id
-    where t.album_id in (
-    SELECT album_id FROM track
-    GROUP BY album_id
-    HAVING COUNT(id) = (
+    GROUP BY a.album_name
+    HAVING COUNT(a.id) < (
+        SELECT album_id FROM track
+        GROUP BY album_id
+        HAVING COUNT(id) = (
         SELECT COUNT(id) FROM track
         GROUP BY album_id
         ORDER BY count
         limit 1
         )
-    )
-    ORDER BY a.album_name;
+        limit 1);
     """).fetchall()
 pprint(short_albums)
